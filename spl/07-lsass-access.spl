@@ -1,0 +1,6 @@
+index=winevtlog500 EventID=10
+| where match(TargetImage, "(?i)\\\\lsass\.exe$")
+| stats count as lsass_accesses values(SourceImage) as source_images values(GrantedAccess) as access_masks values(SourceUser) as source_users by TargetImage
+| eval detection="Suspicious LSASS Process Access"
+| table TargetImage, source_users, source_images, access_masks, lsass_accesses, detection
+| sort - lsass_accesses
