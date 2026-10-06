@@ -1,0 +1,8 @@
+index=winevtlog500 EventType="AZURE_AD" Category="SignInLogs" ResultType="50126"
+| stats count as failed_signins dc(UserPrincipalName) as unique_users values(UserPrincipalName) as users values(RiskLevelDuringSignIn) as risk_levels values(RiskState) as risk_states min(_time) as first_attempt max(_time) as last_attempt by IPAddress
+| eval window_seconds=last_attempt-first_attempt
+| where failed_signins >= 5
+| eval detection="Azure AD Suspicious Failed Sign-Ins"
+| convert ctime(first_attempt) ctime(last_attempt)
+| table IPAddress, failed_signins, unique_users, users, risk_levels, risk_states, first_attempt, last_attempt, window_seconds, detection
+| sort - failed_signins
