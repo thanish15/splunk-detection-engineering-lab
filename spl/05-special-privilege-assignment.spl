@@ -1,0 +1,6 @@
+index=winevtlog500 EventID=4672
+| where match(PrivilegeList, "(?i)SeDebugPrivilege")
+| stats count as privilege_events values(PrivilegeList) as privileges by SubjectUserName, SubjectDomainName
+| eval detection="Suspicious Special Privilege Assignment"
+| table SubjectUserName, SubjectDomainName, privilege_events, privileges, detection
+| sort - privilege_events
