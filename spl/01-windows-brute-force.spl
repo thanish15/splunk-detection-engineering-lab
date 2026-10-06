@@ -1,0 +1,5 @@
+index=winevtlog500 EventID=4625
+| bin _time span=10m
+| stats count as failed_attempts by _time, IpAddress, TargetUserName
+| where failed_attempts >= 5
+| sort - failed_attempts
