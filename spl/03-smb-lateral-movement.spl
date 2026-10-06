@@ -1,0 +1,5 @@
+index=winevtlog500 (EventID=5140 OR EventID=5145) ShareName="\\*\ADMIN$"
+| stats count as share_accesses values(EventID) as EventIDs values(RelativeTargetName) as targets values(ShareName) as shares by IpAddress, SubjectUserName
+| eval detection="Suspicious ADMIN$ Network Share Access"
+| table IpAddress, SubjectUserName, share_accesses, EventIDs, shares, targets, detection
+| sort - share_accesses
