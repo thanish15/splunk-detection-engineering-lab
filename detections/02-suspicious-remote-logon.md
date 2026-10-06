@@ -55,4 +55,4 @@ Possible false positives include:
 - Help-desk activity
 - Remote support sessions
 - Shared administrative workstations
-The threshold and time window should be adjusted based on normal RDP usage in the environment.
+The threshold and time window should be adjusted based on normal RDP usage in the environment
