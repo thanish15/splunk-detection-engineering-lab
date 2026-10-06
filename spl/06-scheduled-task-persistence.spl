@@ -1,0 +1,6 @@
+index=winevtlog500 EventID=4702
+| where match(TaskName, "(?i)^\\\\Updater\\\\") AND match(TaskContent, "(?i)powershell\.exe")
+| stats count as task_updates values(TaskName) as task_names values(TaskContent) as task_actions values(UserName) as users by Author
+| eval detection="Suspicious Scheduled Task Persistence"
+| table Author, users, task_updates, task_names, task_actions, detection
+| sort - task_updates
