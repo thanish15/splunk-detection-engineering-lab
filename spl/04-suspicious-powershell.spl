@@ -1,0 +1,6 @@
+index=winevtlog500 EventID=4104
+| where match(ScriptBlockText, "(?i)Get-Process\s+lsass|Get-ScheduledTask|Get-LocalUser")
+| stats count as suspicious_commands values(ScriptBlockText) as commands values(Path) as script_paths by AccountName
+| eval detection="Suspicious PowerShell Activity"
+| table AccountName, suspicious_commands, commands, script_paths, detection
+| sort - suspicious_commands
